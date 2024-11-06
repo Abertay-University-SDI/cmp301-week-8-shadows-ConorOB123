@@ -30,6 +30,7 @@ private:
 
 	Light* light;
 	AModel* model;
+	AModel* model2;
 	ShadowShader* shadowShader;
 	DepthShader* depthShader;
 
