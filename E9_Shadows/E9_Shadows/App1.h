@@ -36,7 +36,10 @@ private:
 
 	ShadowMap* shadowMap;
 
-	float yRot;
+	float SpaceShipx;
+	float Lightx;
+	float Lighty;
+	float Lightz;
 };
 
 #endif

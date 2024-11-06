@@ -4,7 +4,9 @@
 
 App1::App1()
 {
-
+	Lightx = 0.0f;
+	Lighty = 0.0f;
+	Lightz = 0.0f;
 }
 
 void App1::init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in, bool VSYNC, bool FULL_SCREEN)
@@ -33,6 +35,9 @@ void App1::init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeigh
 	// This is your shadow map
 	shadowMap = new ShadowMap(renderer->getDevice(), shadowmapWidth, shadowmapHeight);
 
+
+	
+
 	// Configure directional light
 	light = new Light();
 	light->setAmbientColour(0.3f, 0.3f, 0.3f, 1.0f);
@@ -41,7 +46,7 @@ void App1::init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeigh
 	light->setPosition(0.f, 0.f, -10.f);
 	light->generateOrthoMatrix((float)sceneWidth, (float)sceneHeight, 0.1f, 100.f);
 
-	yRot = 0.0f;
+	SpaceShipx = 0.0f;
 
 }
 
@@ -93,6 +98,7 @@ void App1::depthPass()
 
 	// get the world, view, and projection matrices from the camera and d3d objects.
 	light->generateViewMatrix();
+	
 	XMMATRIX lightViewMatrix = light->getViewMatrix();
 	XMMATRIX lightProjectionMatrix = light->getOrthoMatrix();
 	XMMATRIX worldMatrix = renderer->getWorldMatrix();
@@ -113,7 +119,7 @@ void App1::depthPass()
 	depthShader->render(renderer->getDeviceContext(), model->getIndexCount());
 
 	worldMatrix = XMMatrixRotationY(50.0f);
-	worldMatrix = XMMatrixTranslation(yRot, 7.f, 5.f);
+	worldMatrix = XMMatrixTranslation(SpaceShipx, 7.f, 5.f);
 	ship->sendData(renderer->getDeviceContext());
 	depthShader->setShaderParameters(renderer->getDeviceContext(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
 	depthShader->render(renderer->getDeviceContext(), ship->getIndexCount());
@@ -151,7 +157,7 @@ void App1::finalPass()
 	shadowShader->render(renderer->getDeviceContext(), model->getIndexCount());
 
 	worldMatrix = XMMatrixRotationY(50.0f);
-	worldMatrix = XMMatrixTranslation(yRot, 7.f, 5.f);
+	worldMatrix = XMMatrixTranslation(SpaceShipx, 7.f, 5.f);
 	ship->sendData(renderer->getDeviceContext());
 	shadowShader->setShaderParameters(renderer->getDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, textureMgr->getTexture(L"text"), shadowMap->getDepthMapSRV(), light);
 	shadowShader->render(renderer->getDeviceContext(), ship->getIndexCount());
@@ -173,12 +179,14 @@ void App1::gui()
 	ImGui::Text("FPS: %.2f", timer->getFPS());
 	ImGui::Checkbox("Wireframe mode", &wireframeToggle);
 
-	static float yRotate = { 0.0f };
-	if (ImGui::SliderFloat("Spaceship rotation", &yRotate, -50, 50))
-	{
-		yRot = yRotate;
-	}
+	
+	ImGui::SliderFloat("Spaceship X-Axis", &SpaceShipx, -50, 50);
 
+	ImGui::SliderFloat("Light X-Axis", &Lightx, -50, 50);
+	ImGui::SliderFloat("Light Y-Axis", &Lighty, -50, 50);
+	ImGui::SliderFloat("Light Z-Axis", &Lightz, -50, 50);
+
+	light->setDirection(Lightx, -1.0f, Lightz);
 
 	// Render UI
 	ImGui::Render();
