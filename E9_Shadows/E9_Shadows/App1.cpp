@@ -5,8 +5,8 @@
 App1::App1()
 {
 	Lightx = 0.0f;
-	Lighty = 0.0f;
-	Lightz = 0.0f;
+	Lighty = -0.7f;
+	Lightz = 0.7f;
 }
 
 void App1::init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in, bool VSYNC, bool FULL_SCREEN)
@@ -182,9 +182,9 @@ void App1::gui()
 	
 	ImGui::SliderFloat("Spaceship X-Axis", &SpaceShipx, -50, 50);
 
-	ImGui::SliderFloat("Light X-Axis", &Lightx, -50, 50);
-	ImGui::SliderFloat("Light Y-Axis", &Lighty, -50, 50);
-	ImGui::SliderFloat("Light Z-Axis", &Lightz, -50, 50);
+	ImGui::SliderFloat("Light X-Axis", &Lightx, -30, 30);
+	ImGui::SliderFloat("Light Y-Axis", &Lighty, -30, 30);
+	ImGui::SliderFloat("Light Z-Axis", &Lightz, -30, 30);
 
 	light->setDirection(Lightx, -1.0f, Lightz);
 
