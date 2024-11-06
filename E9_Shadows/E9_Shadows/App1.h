@@ -30,11 +30,13 @@ private:
 
 	Light* light;
 	AModel* model;
-	AModel* model2;
+	AModel* ship;
 	ShadowShader* shadowShader;
 	DepthShader* depthShader;
 
 	ShadowMap* shadowMap;
+
+	float yRot;
 };
 
 #endif
